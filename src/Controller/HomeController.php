@@ -27,4 +27,28 @@ class HomeController extends AbstractController
     {
         return $this->render('output.html.twig', ['output' => 'Annotation']);
     }
+
+    /**
+     * @Route("/cube/{num?}", name="cube", methods={"GET"})
+     *
+     * @param int $num
+     *
+     * @return Response
+     */
+    public function cube(?int $num): Response
+    {
+        return $this->render('output.html.twig', ['output' => $num ** 3]);
+    }
+
+    /**
+     * @Route("/double/{num<\d+>?0}", name="double")
+     *
+     * @param int $num
+     *
+     * @return Response
+     */
+    public function double(int $num): Response
+    {
+        return $this->render('output.html.twig', ['output' => $num ** 2]);
+    }
 }
