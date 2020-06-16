@@ -17,4 +17,14 @@ class HomeController extends AbstractController
     {
         return $this->render('output.html.twig', ['output' => 'YAML']);
     }
+
+    /**
+     * @Route("/indexAnnotation", name="annotation")
+     *
+     * @return Response
+     */
+    public function indexAnnotation(): Response
+    {
+        return $this->render('output.html.twig', ['output' => 'Annotation']);
+    }
 }
