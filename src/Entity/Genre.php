@@ -27,7 +27,7 @@ class Genre
     /**
      * @ORM\ManyToMany(targetEntity=Movie::class, mappedBy="genres")
      */
-    private ArrayCollection $movies;
+    private Collection $movies;
 
     public function __construct()
     {

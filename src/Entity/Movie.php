@@ -47,12 +47,12 @@ class Movie
     /**
      * @ORM\ManyToMany(targetEntity=Genre::class, inversedBy="movies")
      */
-    private ArrayCollection $genres;
+    private Collection $genres;
 
     /**
      * @ORM\ManyToMany(targetEntity=Keyword::class, inversedBy="movies")
      */
-    private ArrayCollection $keywords;
+    private Collection $keywords;
 
     public function __construct()
     {

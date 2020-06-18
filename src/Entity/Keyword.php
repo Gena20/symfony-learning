@@ -27,7 +27,7 @@ class Keyword
     /**
      * @ORM\ManyToMany(targetEntity=Movie::class, mappedBy="keywords")
      */
-    private ArrayCollection $movies;
+    private Collection $movies;
 
     public function __construct()
     {
