@@ -25,7 +25,7 @@ class Movie
     private ?string $title;
 
     /**
-     * @ORM\Column(type="string", length=1024)
+     * @ORM\Column(type="text")
      */
     private ?string $overview;
 
@@ -47,12 +47,12 @@ class Movie
     /**
      * @ORM\ManyToMany(targetEntity=Genre::class, inversedBy="movies")
      */
-    private $genres;
+    private ArrayCollection $genres;
 
     /**
      * @ORM\ManyToMany(targetEntity=Keyword::class, inversedBy="movies")
      */
-    private $keywords;
+    private ArrayCollection $keywords;
 
     public function __construct()
     {
