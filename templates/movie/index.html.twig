@@ -13,6 +13,9 @@
     <thead>
     <tr>
       <th>Title</th>
+      <th>Overview</th>
+      <th>Budget</th>
+      <th>Release date</th>
       <th>Genres</th>
       <th>Keywords</th>
     </tr>
@@ -21,6 +24,9 @@
     {% for movie in movies %}
       <tr>
         <td>{{ movie.title }}</td>
+        <td>{{ movie.overview }}</td>
+        <td>{{ movie.budget }} $</td>
+        <td>{{ movie.getReleaseDate() | date }}</td>
         <td>
           <ul class="list-unstyled">
             {% for genre in movie.genres %}
