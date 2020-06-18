@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Genre;
+use App\Entity\Keyword;
 use App\Entity\Movie;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -105,7 +106,7 @@ class AppFixtures extends Fixture
 
         for ($i = 0; $i < self::RECORD_AMOUNT; ++$i) {
             $movie = (new Movie())
-                ->setTitle($this->faker->title())
+                ->setTitle($this->faker->word())
                 ->setBudget($this->faker->randomNumber(9))
                 ->setOverview($this->faker->text())
                 ->setReleaseDate($this->faker->dateTime())
@@ -138,7 +139,7 @@ class AppFixtures extends Fixture
         $amount = random_int(1, 6);
         for ($i = 0; $i < $amount; ++$i) {
             $keyword = $this->faker->randomElement($this->keywords);
-            $movie->addGenre($keyword);
+            $movie->addKeyword($keyword);
         }
     }
 
@@ -157,7 +158,7 @@ class AppFixtures extends Fixture
     private function makeKeywords(ObjectManager $manager): void
     {
         foreach (self::$rawKeywords as $rawKeyword) {
-            $keyword = (new Genre())->setName($rawKeyword);
+            $keyword = (new Keyword())->setName($rawKeyword);
 
             $manager->persist($keyword);
             $this->keywords[] = $keyword;
