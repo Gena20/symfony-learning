@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello MovieController!{% endblock %}
+
+{% block body %}
+<style>
+
+</style>
+
+<div class="container">
+  <h1>Movies</h1>
+  <table class="table table-condensed table-striped">
+    <thead>
+    <tr>
+      <th>Title</th>
+      <th>Genres</th>
+      <th>Keywords</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for movie in movies %}
+      <tr>
+        <td>{{ movie.title }}</td>
+        <td>
+          <ul class="list-unstyled">
+            {% for genre in movie.genres %}
+              <li>{{ genre.name }}</li>
+            {% endfor %}
+          </ul>
+        </td>
+        <td>
+          <ul class="list-unstyled">
+            {% for keyword in movie.keywords %}
+              <li>{{ keyword.name }}</li>
+            {% endfor %}
+          </ul>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  {% if maxPages > 1 %}
+    <ul class="pagination pagination-sm">
+      {# `«` arrow  #}
+      <li class="page-item">
+        <a href="{{ path('movie', {page: page-1 < 1 ? 1 : page-1}) }}" class="page-link">«</a>
+      </li>
+
+      {# Render each page number #}
+      {% for i in 1..maxPages %}
+        <li {{ page == i ? 'class="active page-item"' }} class="page-item">
+          <a href="{{ path('movie', {page: i}) }}" class="page-link">{{ i }}</a>
+        </li>
+      {% endfor %}
+
+      {# `»` arrow #}
+      <li class="page-item">
+        <a href="{{ path('movie', {page: page+1 <= maxPages ? page+1 : page}) }}" class="page-link">»</a>
+      </li>
+    </ul>
+  {% endif %}
+</div>
+
+
+
+{% endblock %}
