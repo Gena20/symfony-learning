@@ -8,16 +8,16 @@
 </style>
 
 <div class="container">
-  <h1>Movies</h1>
+  <h1>{{ 'movie.word' | trans }}</h1>
   <table class="table table-condensed table-striped">
     <thead>
     <tr>
-      <th>Title</th>
-      <th>Overview</th>
-      <th>Budget</th>
-      <th>Release date</th>
-      <th>Genres</th>
-      <th>Keywords</th>
+      <th>{{ 'movie.title' | trans }}</th>
+      <th>{{ 'movie.overview' | trans }}</th>
+      <th>{{ 'movie.budget' | trans }}</th>
+      <th>{{ 'movie.release_date' | trans }}</th>
+      <th>{{ 'movie.genres' | trans }}</th>
+      <th>{{ 'movie.keywords' | trans }}</th>
     </tr>
     </thead>
     <tbody>
@@ -25,9 +25,10 @@
       <tr>
         <td>{{ movie.title }}</td>
         <td>{{ movie.overview }}</td>
-        <td>{{ movie.budget }} $</td>
-        <td>{{ movie.getReleaseDate() | date }}</td>
+        <td>{{ movie.budget | number_format(0, '.', ',') }}$</td>
+        <td>{{ movie.getReleaseDate() | date('d.m.Y') }}</td>
         <td>
+          {{ 'num_of_genres' | trans({'genre': movie.genres.count}) }}
           <ul class="list-unstyled">
             {% for genre in movie.genres %}
               <li>{{ genre.name }}</li>

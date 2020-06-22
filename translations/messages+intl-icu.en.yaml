@@ -1,0 +1,17 @@
+movie:
+  word: Фильмы
+  title: Название
+  overview: Описание
+  budget: Бюджет
+  release_date: 'Дата выхода'
+  genres: Жанры
+  keywords: 'Ключевые слова'
+
+num_of_genres: >-
+  {genre, plural,
+    =1    {# жанр}
+    =2    {# жанра}
+    =3    {# жанра}
+    =4    {# жанра}
+    other {# жанров}
+  }
