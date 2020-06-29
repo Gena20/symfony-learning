@@ -1,0 +1,17 @@
+<div class="movie-form">
+  {{ form_errors(form) }}
+
+      {{ form_start(form) }}
+
+      {{ form_row(form.title) }}
+      {{ form_row(form.overview) }}
+      {{ form_row(form.runtime) }}
+      {{ form_row(form.budget) }}
+      {{ form_row(form.release_date) }}
+
+      {{ form_row(form.genres) }}
+      {{ form_row(form.keywords) }}
+
+  <button class="btn btn-primary" type="submit">{{ 'Save' | trans }}</button>
+  {{ form_end(form) }}
+</div>

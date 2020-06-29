@@ -9,6 +9,7 @@
 
 <div class="container">
   <h1>{{ 'movie.word' | trans }}</h1>
+  <a class="btn btn-dark" href="{{ path('create_movie') }}">{{ 'Add the movie' | trans }}</a>
   <table class="table table-condensed table-striped">
     <thead>
     <tr>
@@ -23,7 +24,7 @@
     <tbody>
     {% for movie in movies %}
       <tr>
-        <td><a href="{{ path('movie_show', {'id': movie.id}) }}">{{ movie.title }}</a></td>
+        <td><a href="{{ path('show_movie', {'id': movie.id}) }}">{{ movie.title }}</a></td>
         <td>{{ movie.overview }}</td>
         <td>{{ movie.budget | number_format(0, '.', ',') }}$</td>
         <td>{{ movie.getReleaseDate() | date('d.m.Y') }}</td>
