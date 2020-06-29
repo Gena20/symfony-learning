@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  <div class="container">
+    <h1>{{ movie.title }}</h1>
+
+    <h4><strong>{{ 'movie.overview' | trans }}:</strong></h4>
+    <p>{{ movie.overview }}</p>
+
+    <p>{{ 'movie.budget' | trans }}: <strong>{{ movie.budget | number_format(0, '.', ',') }}$</strong></p>
+    <p>{{ 'movie.release_date' | trans }}: <strong>{{ movie.getReleaseDate() | date('d.m.Y') }}</strong></p>
+
+    <h4 class="pt-3"><strong>{{ 'movie.genres' | trans }}</strong></h4>
+    <div class="card">
+      <ul class="list-group list-group-flush">
+        {% for genre in movie.genres %}
+          <li class="list-group-item">{{ genre.name }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <h4 class="pt-3"><strong>{{ 'movie.keywords' | trans }}</strong></h4>
+    <div class="card">
+      <ul class="list-group list-group-flush">
+        {% for keyword in movie.keywords %}
+          <li class="list-group-item">{{ keyword.name }}</li>
+        {% endfor %}
+      </ul>
+      {#
+      <div class="card-footer">
+        <a class="btn btn-dark" href="{{ path('pizza_update', {'id': movie.id}) }}">{{ 'Update' | trans }}</a>
+      </div>
+      #}
+    </div>
+
+    <p class="text-right"><a href="{{ path('movie') }}">{{ 'Back to list' | trans }}</a></p>
+  </div>
+{% endblock %}

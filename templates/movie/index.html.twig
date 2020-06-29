@@ -23,7 +23,7 @@
     <tbody>
     {% for movie in movies %}
       <tr>
-        <td>{{ movie.title }}</td>
+        <td><a href="{{ path('movie_show', {'id': movie.id}) }}">{{ movie.title }}</a></td>
         <td>{{ movie.overview }}</td>
         <td>{{ movie.budget | number_format(0, '.', ',') }}$</td>
         <td>{{ movie.getReleaseDate() | date('d.m.Y') }}</td>

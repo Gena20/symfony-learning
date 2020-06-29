@@ -29,5 +29,15 @@ class MovieController extends AbstractController
         return $this->render('movie/index.html.twig', compact('movies', 'maxPages', 'page'));
     }
 
+    /**
+     * @Route("/movie-show/{id<\d+>}", name="movie_show")
+     * @param $id
+     * @return Response
+     */
+    public function show($id): Response
+    {
+        $movie = $this->movieRepository->find($id);
+        return $this->render('movie/show.html.twig', compact('movie'));
+    }
 
 }
