@@ -17,32 +17,32 @@ class Movie
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private ?int $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private ?string $title;
+    private ?string $title = null;
 
     /**
      * @ORM\Column(type="text")
      */
-    private ?string $overview;
+    private ?string $overview = null;
 
     /**
      * @ORM\Column(type="float")
      */
-    private ?float $budget;
+    private ?float $budget = null;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private ?int $runtime;
+    private ?int $runtime = null;
 
     /**
      * @ORM\Column(type="date")
      */
-    private ?\DateTimeInterface $release_date;
+    private ?\DateTimeInterface $releaseDate = null;
 
     /**
      * @ORM\ManyToMany(targetEntity=Genre::class, inversedBy="movies")
@@ -115,12 +115,12 @@ class Movie
 
     public function getReleaseDate(): ?\DateTimeInterface
     {
-        return $this->release_date;
+        return $this->releaseDate;
     }
 
-    public function setReleaseDate(\DateTimeInterface $release_date): self
+    public function setReleaseDate(\DateTimeInterface $releaseDate): self
     {
-        $this->release_date = $release_date;
+        $this->releaseDate = $releaseDate;
 
         return $this;
     }
