@@ -17,6 +17,7 @@ class Keyword
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"show"})
      */
     private ?int $id;
 

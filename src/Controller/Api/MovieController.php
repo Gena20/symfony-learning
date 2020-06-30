@@ -44,6 +44,7 @@ class MovieController extends AbstractController
      * @SWG\Tag(name="get-movie")
      *
      * @param $id
+     *
      * @return Response
      */
     public function showMovie(int $id): Response
@@ -59,48 +60,169 @@ class MovieController extends AbstractController
             $status = Response::HTTP_OK;
         }
 
-        return new Response($data, $status, [
-            'Content-Type' => 'json; charset=utf-8',
-        ]);
+        return $this->json($data, $status);
+    }
+
+    /**
+     * Delete the movie by id.
+     *
+     * @Route("/api/movie/{id<\d+>?1}", name="api_delete_movie", methods={"DELETE"})
+     * @SWG\Response(
+     *     response=200,
+     *     description="Delete the movie by id",
+     *     @Model(type=Movie::class)
+     * )
+     * @SWG\Parameter(
+     *     name="id",
+     *     in="query",
+     *     type="integer",
+     *     description="The field used to delete the movie"
+     * )
+     * @SWG\Tag(name="delete-movie")
+     *
+     * @param $id
+     *
+     * @return Response
+     */
+    public function deleteMovie(int $id): Response
+    {
+        $movie = $this->movieManager->get($id);
+        $data = sprintf('{"message": "Movie (id: %s) was not found."}', $id);
+        $status = Response::HTTP_UNPROCESSABLE_ENTITY;
+
+        if ($movie !== null) {
+            $this->movieManager->delete($movie);
+            $data = $this->serializer->serialize($movie, 'json', [
+                'groups' => 'show',
+            ]);
+            $status = Response::HTTP_OK;
+        }
+
+        return $this->json($data, $status);
+    }
+
+    /**
+     * Update the movie by id.
+     *
+     * @Route("/api/movie/{id<\d+>?1}", name="api_update_movie", methods={"PUT"})
+     * @SWG\Response(
+     *     response=200,
+     *     description="Update the movie by id",
+     *     @Model(type=Movie::class)
+     * )
+     * @SWG\Parameter(
+     *     name="id",
+     *     in="query",
+     *     type="integer",
+     *     description="The field used to update the movie"
+     * )
+     * @SWG\Parameter(
+     *     name="movie_info",
+     *     in="body",
+     *     @SWG\Schema(type="object",
+     *         @SWG\Property(property="movie", ref=@Model(type=Movie::class))
+     *     )
+     * )
+     * @SWG\Tag(name="delete-movie")
+     *
+     * @param int     $id
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function updateMovie(int $id, Request $request): Response
+    {
+        $movie = $this->movieManager->get($id);
+        $data = sprintf('{"message": "Movie (id: %s) was not found."}', $id);
+        $status = Response::HTTP_UNPROCESSABLE_ENTITY;
+
+        if ($movie !== null) {
+            $movieData = $this->serializer->deserialize($request->getContent(), Movie::class, 'json');
+            $violations = $this->validator->validate($movieData);
+
+            if ($violations->count() > 0) {
+                $data = ['message' => $violations->get(0)->getMessage()];
+                $status = Response::HTTP_BAD_REQUEST;
+            } else {
+                $this->movieManager->update($movieData);
+                $data = $this->serializer->serialize($movieData, 'json', ['groups' => 'show']);
+                $status = Response::HTTP_OK;
+            }
+        }
+
+        return $this->json($data, $status);
+    }
+
+    /**
+     * Create a movie.
+     *
+     * @Route("/api/movie/{id<\d+>?1}", name="api_create_movie", methods={"POST"})
+     * @SWG\Response(
+     *     response=201,
+     *     description="Create a movie",
+     *     @Model(type=Movie::class)
+     * )
+     * @SWG\Parameter(
+     *     name="movie_info",
+     *     in="body",
+     *     @SWG\Schema(type="object",
+     *         @SWG\Property(property="movie", ref=@Model(type=Movie::class))
+     *     )
+     * )
+     * @SWG\Tag(name="delete-movie")
+     *
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function createMovie(Request $request): Response
+    {
+        $movieData = $this->serializer->deserialize($request->getContent(), Movie::class, 'json');
+        $violations = $this->validator->validate($movieData);
+
+        if ($violations->count() > 0) {
+            $data = ['message' => $violations->get(0)->getMessage()];
+            $status = Response::HTTP_BAD_REQUEST;
+        } else {
+            $movie = $this->movieManager->store($movieData);
+            $data = $this->serializer->serialize($movie, 'json', ['groups' => 'show']);
+            $status = Response::HTTP_CREATED;
+        }
+
+        return $this->json($data, $status);
     }
 
     /**
      * Deserialize the movie info.
      *
-     * @Route("/api/deserialize-movie", name="deserialize_movie", methods={"GET"})
+     * @Route("/api/deserialize-movie", name="deserialize_movie", methods={"POST"})
      * @SWG\Response(
      *     response=200,
      *     description="Deserializes the movie info and returns it",
      *     @Model(type=Movie::class)
      * )
      * @SWG\Parameter(
-     *     name="json",
-     *     in="query",
-     *     type="string",
-     *     description="The field used to get info about the movie"
+     *     name="movie_info",
+     *     in="body",
+     *     @SWG\Schema(type="object",
+     *         @SWG\Property(property="movie", ref=@Model(type=Movie::class))
+     *     )
      * )
      * @SWG\Tag(name="deserialize-movie")
      *
      * @param Request $request
+     *
      * @return Response
      */
     public function deserializeMovie(Request $request): Response
     {
-        $movie = $this->serializer->deserialize($request->get('json'), Movie::class, 'json');
+        $movie = $this->serializer->deserialize($request->getContent(), Movie::class, 'json');
         $violations = $this->validator->validate($movie);
 
         if ($violations->count() > 0) {
-            return new Response(
-                sprintf('{"message": "%s"', $violations->get(0)->getMessage()),
-                Response::HTTP_BAD_REQUEST, [
-                    'Content-Type' => 'json; charset=utf-8',
-                ]);
+            return $this->json(['message' => $violations->get(0)->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
-        return new Response(
-            $this->serializer->serialize($movie, 'json', ['groups' => 'show']),
-            Response::HTTP_OK, [
-                'Content-Type' => 'json; charset=utf-8',
-            ]);
+        return $this->json($this->serializer->serialize($movie, 'json', ['groups' => 'show']), Response::HTTP_OK);
     }
 }
