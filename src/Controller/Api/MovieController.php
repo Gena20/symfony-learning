@@ -4,6 +4,8 @@ namespace App\Controller\Api;
 
 use App\Entity\Movie;
 use App\Service\MovieManager;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Swagger\Annotations as SWG;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,13 +27,26 @@ class MovieController extends AbstractController
     }
 
     /**
+     * Get the movie by id.
+     *
      * @Route("/api/movie/{id<\d+>?1}", name="api_show_movie", methods={"GET"})
+     * @SWG\Response(
+     *     response=200,
+     *     description="Returns the movie by id",
+     *     @Model(type=Movie::class)
+     * )
+     * @SWG\Parameter(
+     *     name="id",
+     *     in="query",
+     *     type="integer",
+     *     description="The field used to get the movie"
+     * )
+     * @SWG\Tag(name="get-movie")
      *
      * @param $id
-     *
      * @return Response
      */
-    public function show($id): Response
+    public function showMovie(int $id): Response
     {
         $movie = $this->movieManager->get($id);
         $data = sprintf('{"message": "Movie (id: %s) was not found."}', $id);
@@ -50,13 +65,26 @@ class MovieController extends AbstractController
     }
 
     /**
-     * @Route("/api/unserialize_movie", name="unserialize_movie", methods={"GET"})
+     * Deserialize the movie info.
+     *
+     * @Route("/api/deserialize-movie", name="deserialize_movie", methods={"GET"})
+     * @SWG\Response(
+     *     response=200,
+     *     description="Deserializes the movie info and returns it",
+     *     @Model(type=Movie::class)
+     * )
+     * @SWG\Parameter(
+     *     name="json",
+     *     in="query",
+     *     type="string",
+     *     description="The field used to get info about the movie"
+     * )
+     * @SWG\Tag(name="deserialize-movie")
      *
      * @param Request $request
-     *
      * @return Response
      */
-    public function unserializeMovie(Request $request): Response
+    public function deserializeMovie(Request $request): Response
     {
         $movie = $this->serializer->deserialize($request->get('json'), Movie::class, 'json');
         $violations = $this->validator->validate($movie);
