@@ -93,8 +93,8 @@ class MovieController extends AbstractController
             return new Response(
                 sprintf('{"message": "%s"', $violations->get(0)->getMessage()),
                 Response::HTTP_BAD_REQUEST, [
-                'Content-Type' => 'json; charset=utf-8',
-            ]);
+                    'Content-Type' => 'json; charset=utf-8',
+                ]);
         }
 
         return new Response(
