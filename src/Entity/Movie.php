@@ -6,6 +6,8 @@ use App\Repository\MovieRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=MovieRepository::class)
@@ -16,41 +18,52 @@ class Movie
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"show"})
      */
     private ?int $id = null;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Length(min=6)
+     * @Groups({"show"})
      */
     private ?string $title = null;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank()
+     * @Groups({"show"})
      */
     private ?string $overview = null;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups({"show"})
      */
     private ?float $budget = null;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"show"})
      */
     private ?int $runtime = null;
 
     /**
      * @ORM\Column(type="date")
+     * @Groups({"show"})
      */
     private ?\DateTimeInterface $releaseDate = null;
 
     /**
      * @ORM\ManyToMany(targetEntity=Genre::class, inversedBy="movies")
+     * @Groups({"show"})
      */
     private Collection $genres;
 
     /**
      * @ORM\ManyToMany(targetEntity=Keyword::class, inversedBy="movies")
+     * @Groups({"show"})
      */
     private Collection $keywords;
 
