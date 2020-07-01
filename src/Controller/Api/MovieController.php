@@ -35,13 +35,17 @@ class MovieController extends AbstractController
      *     description="Returns the movie by id",
      *     @Model(type=Movie::class)
      * )
+     * @SWG\Response(
+     *     response=422,
+     *     description="Returns error message if movie was not found"
+     * )
      * @SWG\Parameter(
      *     name="id",
      *     in="query",
      *     type="integer",
      *     description="The field used to get the movie"
      * )
-     * @SWG\Tag(name="get-movie")
+     * @SWG\Tag(name="movie")
      *
      * @param $id
      *
@@ -72,13 +76,17 @@ class MovieController extends AbstractController
      *     description="Delete the movie by id",
      *     @Model(type=Movie::class)
      * )
+     * @SWG\Response(
+     *     response=422,
+     *     description="Returns error message if movie was not found"
+     * )
      * @SWG\Parameter(
      *     name="id",
      *     in="query",
      *     type="integer",
      *     description="The field used to delete the movie"
      * )
-     * @SWG\Tag(name="delete-movie")
+     * @SWG\Tag(name="movie")
      *
      * @param $id
      *
@@ -110,6 +118,14 @@ class MovieController extends AbstractController
      *     description="Update the movie by id",
      *     @Model(type=Movie::class)
      * )
+     * @SWG\Response(
+     *     response=422,
+     *     description="Returns error message if movie was not found"
+     * )
+     * @SWG\Response(
+     *     response=400,
+     *     description="Returns validation error message"
+     * )
      * @SWG\Parameter(
      *     name="id",
      *     in="query",
@@ -123,7 +139,7 @@ class MovieController extends AbstractController
      *         @SWG\Property(property="movie", ref=@Model(type=Movie::class))
      *     )
      * )
-     * @SWG\Tag(name="delete-movie")
+     * @SWG\Tag(name="movie")
      *
      * @param int     $id
      * @param Request $request
@@ -156,11 +172,15 @@ class MovieController extends AbstractController
     /**
      * Create a movie.
      *
-     * @Route("/api/movie/{id<\d+>?1}", name="api_create_movie", methods={"POST"})
+     * @Route("/api/movie", name="api_create_movie", methods={"POST"})
      * @SWG\Response(
      *     response=201,
      *     description="Create a movie",
      *     @Model(type=Movie::class)
+     * )
+     * @SWG\Response(
+     *     response=400,
+     *     description="Returns validation error message"
      * )
      * @SWG\Parameter(
      *     name="movie_info",
@@ -169,7 +189,7 @@ class MovieController extends AbstractController
      *         @SWG\Property(property="movie", ref=@Model(type=Movie::class))
      *     )
      * )
-     * @SWG\Tag(name="delete-movie")
+     * @SWG\Tag(name="movie")
      *
      * @param Request $request
      *
