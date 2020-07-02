@@ -20,21 +20,6 @@ class MovieController extends AbstractController
     }
 
     /**
-     * @Route("/test/{id<\d+>}")
-     *
-     * @param $id
-     * @param Request $request
-     *
-     * @return Response
-     */
-    public function test($id, Request $request): Response
-    {
-        $movie = $this->movieManager->get($id);
-
-        return $this->json($movie);
-    }
-
-    /**
      * @Route("/movie/{page<\d+>?1}", name="movie")
      *
      * @param $page
