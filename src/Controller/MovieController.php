@@ -47,8 +47,9 @@ class MovieController extends AbstractController
     public function update($id, Request $request): Response
     {
         $movie = $this->movieManager->get($id);
-        $form = $this->createForm(MovieType::class, $movie);
+        $this->denyAccessUnlessGranted('edit', $movie);
 
+        $form = $this->createForm(MovieType::class, $movie);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $movie = $form->getData();

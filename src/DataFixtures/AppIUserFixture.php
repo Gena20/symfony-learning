@@ -11,6 +11,7 @@ class AppIUserFixture extends Fixture
 {
     public const DEFAULT_EMAIL = 'user@example.com';
     public const DEFAULT_PASSWORD = 'example-password';
+    public const AMOUNT_OF_USERS = 10;
 
     private UserPasswordEncoderInterface $passwordEncoder;
 
@@ -21,13 +22,14 @@ class AppIUserFixture extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        $user = (new User())
-            ->setEmail(self::DEFAULT_EMAIL)
-            ->setRoles(['ROLE_USER']);
-        $user->setPassword($this->passwordEncoder->encodePassword($user, self::DEFAULT_PASSWORD));
+        for ($i = 0; $i < self::AMOUNT_OF_USERS; ++$i) {
+            $user = (new User())
+                ->setEmail(self::DEFAULT_EMAIL . $i)
+                ->setRoles(['ROLE_USER']);
+            $user->setPassword($this->passwordEncoder->encodePassword($user, self::DEFAULT_PASSWORD));
+            $manager->persist($user);
+        }
 
-        $manager->persist($user);
         $manager->flush();
     }
-
 }

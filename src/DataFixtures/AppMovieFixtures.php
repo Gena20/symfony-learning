@@ -106,6 +106,7 @@ class AppMovieFixtures extends Fixture
         $this->makeGenres($manager);
         $this->makeKeywords($manager);
         $repository = $manager->getRepository(User::class);
+        /** @var User $ownerUser */
         $ownerUser = $repository->findAll()[0];
 
         for ($i = 0; $i < self::RECORD_AMOUNT; ++$i) {
