@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class MovieController extends AbstractController
 {
@@ -64,11 +65,12 @@ class MovieController extends AbstractController
     /**
      * @Route("/movie/create", name="create_movie")
      *
-     * @param Request $request
+     * @param Request       $request
+     * @param UserInterface $user
      *
      * @return Response
      */
-    public function create(Request $request): Response
+    public function create(Request $request, UserInterface $user): Response
     {
         $movie = new Movie();
         $form = $this->createForm(MovieType::class, $movie);
@@ -76,6 +78,7 @@ class MovieController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $movie = $form->getData();
+            $movie->setOwnerUser($user);
             $this->movieManager->store($movie);
 
             return $this->redirectToRoute('show_movie', ['id' => $movie->getId()]);

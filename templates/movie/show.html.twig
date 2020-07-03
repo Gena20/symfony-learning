@@ -9,6 +9,7 @@
 
     <p>{{ 'movie.budget' | trans }}: <strong>{{ movie.budget | number_format(0, '.', ',') }}$</strong></p>
     <p>{{ 'movie.release_date' | trans }}: <strong>{{ movie.getReleaseDate() | date('d.m.Y') }}</strong></p>
+    <p>{{ 'movie.owner_user' | trans }}: <strong>{{ movie.ownerUser.email }}</strong></p>
 
     <h4 class="pt-3"><strong>{{ 'movie.genres' | trans }}</strong></h4>
     <div class="card">

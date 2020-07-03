@@ -7,7 +7,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class AppUserFixture extends Fixture
+class AppIUserFixture extends Fixture
 {
     public const DEFAULT_EMAIL = 'user@example.com';
     public const DEFAULT_PASSWORD = 'example-password';

@@ -6,6 +6,7 @@ movie:
   release_date: 'Дата выхода'
   genres: Жанры
   keywords: 'Ключевые слова'
+  owner_user: Пользователь
 
 num_of_genres: >-
   {genre, plural,

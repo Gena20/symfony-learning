@@ -5,12 +5,14 @@ namespace App\DataFixtures;
 use App\Entity\Genre;
 use App\Entity\Keyword;
 use App\Entity\Movie;
+use App\Entity\User;
+use App\Repository\UserRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Generator;
 
-class AppFixtures extends Fixture
+class AppMovieFixtures extends Fixture
 {
     /**
      * Total amount of movie records.
@@ -89,7 +91,7 @@ class AppFixtures extends Fixture
     private array $keywords;
 
     /**
-     * AppFixtures constructor.
+     * AppMovieFixtures constructor.
      */
     public function __construct()
     {
@@ -103,6 +105,8 @@ class AppFixtures extends Fixture
     {
         $this->makeGenres($manager);
         $this->makeKeywords($manager);
+        $repository = $manager->getRepository(User::class);
+        $ownerUser = $repository->findAll()[0];
 
         for ($i = 0; $i < self::RECORD_AMOUNT; ++$i) {
             $movie = (new Movie())
@@ -110,6 +114,7 @@ class AppFixtures extends Fixture
                 ->setBudget($this->faker->randomNumber(9))
                 ->setOverview($this->faker->text())
                 ->setReleaseDate($this->faker->dateTime())
+                ->setOwnerUser($ownerUser)
                 ->setRuntime($this->faker->randomNumber(3));
 
             $this->addRandomGenres($movie);

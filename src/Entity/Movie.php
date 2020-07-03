@@ -67,6 +67,12 @@ class Movie
      */
     private Collection $keywords;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="movies")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $ownerUser;
+
     public function __construct()
     {
         $this->genres = new ArrayCollection();
@@ -186,6 +192,18 @@ class Movie
         if ($this->keywords->contains($keyword)) {
             $this->keywords->removeElement($keyword);
         }
+
+        return $this;
+    }
+
+    public function getOwnerUser(): ?User
+    {
+        return $this->ownerUser;
+    }
+
+    public function setOwnerUser(?User $ownerUser): self
+    {
+        $this->ownerUser = $ownerUser;
 
         return $this;
     }
