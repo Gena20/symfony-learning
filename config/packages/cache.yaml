@@ -1,5 +1,10 @@
 framework:
   cache:
+    prefix_seed: gena20/symfony_learning
+    default_redis_provider: app.cache.redis_provider
+    app: cache.adapter.redis
+    system: cache.adapter.redis
+
   # Unique name of your app: used to compute stable namespaces for cache keys.
   #prefix_seed: your_vendor_name/app_name
 

@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\ItemInterface;
 
 class MovieController extends AbstractController
 {
@@ -95,11 +97,18 @@ class MovieController extends AbstractController
      *
      * @param $id
      *
+     * @param CacheInterface $cache
      * @return Response
+     *
+     * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function show($id): Response
+    public function show($id, CacheInterface $cache): Response
     {
-        $movie = $this->movieManager->get($id);
+        $movie = $cache->get("movie.$id", function (ItemInterface $item) use ($id) {
+            $item->expiresAfter(36000);
+
+            return $this->movieManager->get($id);
+        });
 
         return $this->render('movie/show.html.twig', compact('movie'));
     }
