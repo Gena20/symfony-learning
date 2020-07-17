@@ -65,11 +65,12 @@ class MovieManager
     {
         $movieId = $movie->getId();
         if ($movieId === null) {
+            $this->logger->warning('Movie with id({id}) was not found.', ['id' => $movie->getId()]);
             throw new StorageException("Movie with id($movieId) was not found.");
         }
         $this->flush();
 
-        $this->logger->info('Movie was updated.', ['id' => $movie->getId()]);
+        $this->logger->info('Movie{id} was updated.', ['id' => $movie->getId()]);
 
         return $movie;
     }
@@ -92,7 +93,7 @@ class MovieManager
         $this->em->persist($movie);
         $this->flush();
 
-        $this->logger->info('Movie was stored.', ['id' => $movie->getId()]);
+        $this->logger->info('Movie({id} was stored.', ['id' => $movie->getId()]);
 
         return $movie;
     }
@@ -110,12 +111,13 @@ class MovieManager
     {
         $movieId = $movie->getId();
         if ($movieId === null) {
+            $this->logger->warning('Movie with id({id}) was not found.', ['id' => $movie->getId()]);
             throw new StorageException("Movie with id($movieId) was not found.");
         }
         $this->em->remove($movie);
         $this->flush();
 
-        $this->logger->info('Movie was deleted.', ['id' => $movie->getId()]);
+        $this->logger->info('Movie({id}) was deleted.', ['id' => $movie->getId()]);
 
         return $movie;
     }

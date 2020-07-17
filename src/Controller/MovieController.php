@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Movie;
 use App\Form\MovieType;
 use App\Service\MovieManager;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,10 +17,12 @@ use Symfony\Contracts\Cache\ItemInterface;
 class MovieController extends AbstractController
 {
     private MovieManager $movieManager;
+    private LoggerInterface $logger;
 
-    public function __construct(MovieManager $movieManager)
+    public function __construct(MovieManager $movieManager, LoggerInterface $logger)
     {
         $this->movieManager = $movieManager;
+        $this->logger = $logger;
     }
 
     /**
@@ -56,6 +59,7 @@ class MovieController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $movie = $form->getData();
             $this->movieManager->update($movie);
+            $this->logger->info('Updated movie({id})', ['id' => $movie->getId()]);
 
             return $this->redirectToRoute('show_movie', ['id' => $movie->getId()]);
         }
@@ -83,6 +87,7 @@ class MovieController extends AbstractController
             $movie = $form->getData();
             $movie->setOwnerUser($user);
             $this->movieManager->store($movie);
+            $this->logger->info('Created movie({id})', ['id' => $movie->getId()]);
 
             return $this->redirectToRoute('show_movie', ['id' => $movie->getId()]);
         }
@@ -96,8 +101,8 @@ class MovieController extends AbstractController
      * @Route("/movie/show/{id<\d+>}", name="show_movie")
      *
      * @param $id
-     *
      * @param CacheInterface $cache
+     *
      * @return Response
      *
      * @throws \Psr\Cache\InvalidArgumentException
